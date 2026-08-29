@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Знакомства КГ</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     * {
@@ -12,92 +15,237 @@
 
     body {
       margin: 0;
+      background: #111;
+      color: #fff;
       font-family: Arial, sans-serif;
-      background: #111111;
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .app {
-      width: 100%;
       max-width: 430px;
       min-height: 100vh;
+      margin: auto;
       padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
       text-align: center;
     }
 
     .logo {
-      font-size: 64px;
+      font-size: 60px;
+      margin-top: 70px;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-size: 32px;
-      margin: 0 0 15px;
+      font-size: 30px;
+      margin-bottom: 10px;
     }
 
     p {
-      color: #aaaaaa;
+      color: #aaa;
       line-height: 1.5;
-      font-size: 16px;
-      margin-bottom: 30px;
     }
 
     button {
       width: 100%;
+      padding: 17px;
+      margin-top: 20px;
       border: none;
       border-radius: 14px;
-      padding: 17px;
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
-      background: #ffffff;
-      color: #111111;
     }
 
-    .small {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #777777;
+    .primary {
+      background: white;
+      color: black;
+    }
+
+    .secondary {
+      background: #292929;
+      color: white;
+    }
+
+    #status {
+      margin-top: 20px;
+      color: #aaa;
+      min-height: 25px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .success {
+      color: #4ade80;
+    }
+
+    .error {
+      color: #ff6b6b;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <div class="logo">❤️</div>
+  <div class="logo">❤️</div>
 
-    <h1>Знакомства КГ</h1>
+  <h1>Знакомства КГ</h1>
 
-    <p>
-      Знакомства для своих.<br>
-      Найди кого-нибудь из тусовки
-      Китай-города.
+  <p>
+    Знакомства для своих.<br>
+    Найди кого-нибудь из тусовки
+    Китай-города.
+  </p>
+
+  <div id="loading">
+    Проверяем доступ...
+  </div>
+
+  <div id="subscribe" class="hidden">
+
+    <p class="error">
+      🔒 Доступ только для подписчиков
+      Подслушано Китай Город
     </p>
 
-    <button onclick="startApp()">
-      Начать знакомства
+    <button class="primary" onclick="subscribe()">
+      Подписаться на канал
     </button>
 
-    <div class="small">
-      Только для подписчиков Подслушано Китай Город
-    </div>
+    <button class="secondary" onclick="checkSubscription()">
+      Я уже подписался
+    </button>
 
   </div>
 
-  <script>
-    function startApp() {
-      alert("Скоро здесь появятся анкеты ❤️");
+  <div id="welcome" class="hidden">
+
+    <p class="success">
+      ✅ Подписка подтверждена
+    </p>
+
+    <button class="primary" onclick="startDating()">
+      ❤️ Начать знакомства
+    </button>
+
+  </div>
+
+  <div id="status"></div>
+
+</div>
+
+<script>
+
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+tg.expand();
+
+const API_URL =
+  "https://misty-meadow-8ef0kg-dating-api.ivonin-nik05.workers.dev/check";
+
+function subscribe() {
+
+  tg.openTelegramLink(
+    "https://t.me/kitaygorod1"
+  );
+
+}
+
+async function checkSubscription() {
+
+  const status = document.getElementById("status");
+
+  status.innerText = "Проверяем подписку...";
+
+  const user = tg.initDataUnsafe.user;
+
+  if (!user) {
+
+    status.innerText =
+      "Открой приложение через Telegram.";
+
+    return;
+
+  }
+
+  try {
+
+    const response = await fetch(API_URL, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        user_id: user.id
+
+      })
+
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (data.subscribed === true) {
+
+      document
+        .getElementById("subscribe")
+        .classList.add("hidden");
+
+      document
+        .getElementById("loading")
+        .classList.add("hidden");
+
+      document
+        .getElementById("welcome")
+        .classList.remove("hidden");
+
+      status.innerText = "";
+
+    } else {
+
+      document
+        .getElementById("loading")
+        .classList.add("hidden");
+
+      document
+        .getElementById("subscribe")
+        .classList.remove("hidden");
+
+      status.innerText =
+        "Подписка не найдена.";
+
     }
-  </script>
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerText =
+      "Ошибка соединения с сервером.";
+
+  }
+
+}
+
+function startDating() {
+
+  alert(
+    "🔥 Отлично! Следующим шагом создадим твою анкету."
+  );
+
+}
+
+checkSubscription();
+
+</script>
 
 </body>
 </html>
