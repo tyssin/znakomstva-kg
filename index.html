@@ -163,6 +163,91 @@
       color: #aaa;
       line-height: 1.5;
     }
+
+    /* КОРОТКИЙ ЭКРАН ПРАВИЛ */
+
+    .rules-intro {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 20px;
+    }
+
+    .rules-link {
+      background: #1d1d1d;
+      border: 1px solid #333;
+      color: white;
+      text-align: left;
+      padding: 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .rules-link-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .rules-link-subtitle {
+      color: #888;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .agreement {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .agreement input {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      margin: 0;
+      padding: 0;
+      accent-color: white;
+    }
+
+    .disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ПОЛНЫЕ ПРАВИЛА */
+
+    .full-rules {
+      background: #1a1a1a;
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 15px;
+    }
+
+    .full-rules h3 {
+      font-size: 17px;
+      margin: 20px 0 8px;
+    }
+
+    .full-rules h3:first-child {
+      margin-top: 0;
+    }
+
+    .full-rules p {
+      font-size: 14px;
+      margin: 0;
+      color: #aaa;
+    }
+
+    .back-button {
+      background: #292929;
+      color: white;
+      margin-top: 20px;
+    }
   </style>
 </head>
 
@@ -229,7 +314,7 @@
   </div>
 
 
-  <!-- ШАГ 1: ИМЯ -->
+  <!-- ШАГ 1 -->
 
   <div id="step1" class="hidden">
 
@@ -257,7 +342,7 @@
   </div>
 
 
-  <!-- ШАГ 2: ВОЗРАСТ -->
+  <!-- ШАГ 2 -->
 
   <div id="step2" class="hidden">
 
@@ -286,7 +371,7 @@
   </div>
 
 
-  <!-- ШАГ 3: ПОЛ -->
+  <!-- ШАГ 3 -->
 
   <div id="step3" class="hidden">
 
@@ -311,7 +396,7 @@
     </button>
 
     <div id="searchInfo" class="gender-description hidden">
-      </div>
+    </div>
 
     <button class="primary" onclick="nextStep(3)">
       Продолжить
@@ -322,7 +407,7 @@
   </div>
 
 
-  <!-- ШАГ 4: О СЕБЕ -->
+  <!-- ШАГ 4 -->
 
   <div id="step4" class="hidden">
 
@@ -360,17 +445,11 @@
 
     <div class="profile-card">
 
-      <div class="profile-name" id="profileName">
-        Алина
-      </div>
+      <div class="profile-name" id="profileName"></div>
 
-      <div class="profile-info" id="profileInfo">
-        18 лет · Девушка
-      </div>
+      <div class="profile-info" id="profileInfo"></div>
 
-      <div class="profile-search" id="profileSearch">
-        ❤️ Ищет парней
-      </div>
+      <div class="profile-search" id="profileSearch"></div>
 
       <div>
         📍 Китай-город
@@ -378,21 +457,188 @@
 
       <br>
 
-      <div id="profileAbout">
-        Люблю музыку и тусовки.
-      </div>
+      <div id="profileAbout"></div>
 
     </div>
 
-    <button class="primary" onclick="createProfile()">
-      ❤️ Создать анкету
+    <button class="primary" onclick="openRules()">
+      Всё верно
     </button>
 
     <button class="secondary" onclick="restart()">
       Изменить
     </button>
 
-    <p id="createStatus"></p>
+  </div>
+
+
+  <!-- КОРОТКИЙ ЭКРАН СОГЛАСИЯ -->
+
+  <div id="rulesScreen" class="hidden">
+
+    <div class="step">Последний шаг</div>
+
+    <h2>Перед созданием анкеты</h2>
+
+    <p>
+      Пожалуйста, ознакомься с правилами сообщества.
+    </p>
+
+    <div
+      class="rules-link"
+      onclick="openFullRules()"
+    >
+
+      <div class="rules-link-title">
+        📜 Правила сообщества
+      </div>
+
+      <div class="rules-link-subtitle">
+        Нажми, чтобы ознакомиться
+      </div>
+
+    </div>
+
+
+    <label class="agreement">
+
+      <input
+        id="agreeRules"
+        type="checkbox"
+        onchange="toggleCreateButton()"
+      >
+
+      <span>
+        Я ознакомился(ась) с правилами
+        и согласен(на) их соблюдать.
+      </span>
+
+    </label>
+
+
+    <button
+      id="createButton"
+      class="primary disabled"
+      onclick="confirmCreateProfile()"
+      disabled
+    >
+      ❤️ Создать анкету
+    </button>
+
+    <p id="rulesError" class="error"></p>
+
+  </div>
+
+
+  <!-- ПОЛНЫЕ ПРАВИЛА -->
+
+  <div id="fullRules" class="hidden">
+
+    <div class="step">Правила сообщества</div>
+
+    <h2>📜 Правила «Знакомств КГ»</h2>
+
+    <div class="full-rules">
+
+      <h3>1. 🔞 18+</h3>
+
+      <p>
+        Сервис предназначен только для совершеннолетних
+        пользователей. Использование сервиса лицами младше
+        18 лет запрещено.
+      </p>
+
+
+      <h3>2. 🤝 Уважение</h3>
+
+      <p>
+        Запрещены оскорбления, травля, угрозы, шантаж,
+        преследование, унижение и намеренная провокация
+        других пользователей.
+      </p>
+
+
+      <h3>3. 📸 Фейковые анкеты</h3>
+
+      <p>
+        Запрещено использовать чужие фотографии,
+        выдавать себя за другого человека или создавать
+        анкету от имени другого человека.
+      </p>
+
+
+      <h3>4. 🚫 Наркотики и психоактивные вещества</h3>
+
+      <p>
+        Запрещены поиск, продажа, покупка, передача,
+        продвижение и распространение наркотических
+        и иных запрещённых психоактивных веществ
+        через сервис.
+      </p>
+
+
+      <h3>5. 🚫 Политика</h3>
+
+      <p>
+        Запрещены политическая агитация, пропаганда,
+        политические призывы и использование сервиса
+        для политических конфликтов.
+      </p>
+
+
+      <h3>6. 💰 Мошенничество</h3>
+
+      <p>
+        Запрещены обман, вымогательство, финансовые схемы
+        и попытки получить деньги или данные других
+        пользователей обманным путём.
+      </p>
+
+
+      <h3>7. 📢 Реклама и спам</h3>
+
+      <p>
+        Запрещены массовые рассылки, навязчивая реклама,
+        спам и продвижение сторонних проектов без разрешения
+        администрации.
+      </p>
+
+
+      <h3>8. 🔐 Персональные данные</h3>
+
+      <p>
+        Запрещено публиковать или распространять чужие
+        номера телефонов, адреса, переписки, фотографии
+        и другие личные данные без согласия человека.
+      </p>
+
+
+      <h3>9. ⚠️ Жалобы</h3>
+
+      <p>
+        Если пользователь нарушает правила, на него можно
+        пожаловаться администрации. Жалобы рассматриваются
+        модерацией.
+      </p>
+
+
+      <h3>10. 🛡 Модерация</h3>
+
+      <p>
+        Администрация имеет право отклонить, скрыть или
+        удалить анкету, а также ограничить или заблокировать
+        доступ пользователя при нарушении правил.
+      </p>
+
+    </div>
+
+
+    <button
+      class="back-button"
+      onclick="closeFullRules()"
+    >
+      ← Вернуться
+    </button>
 
   </div>
 
@@ -403,11 +649,11 @@
 
     <div class="logo">🎉</div>
 
-    <h1>Анкета создана!</h1>
+    <h1>Анкета отправлена!</h1>
 
     <p class="center">
-      Теперь можно смотреть анкеты других пользователей
-      и ставить лайки.
+      Твоя анкета отправлена на модерацию.
+      После одобрения она появится у других пользователей.
     </p>
 
     <button class="primary" onclick="startDating()">
@@ -454,6 +700,8 @@ function hideAll() {
     "step3",
     "step4",
     "preview",
+    "rulesScreen",
+    "fullRules",
     "created"
 
   ];
@@ -579,8 +827,6 @@ function startProfile() {
 function nextStep(step) {
 
 
-  // ИМЯ
-
   if (step === 1) {
 
     const name =
@@ -614,8 +860,6 @@ function nextStep(step) {
 
   }
 
-
-  // ВОЗРАСТ
 
   if (step === 2) {
 
@@ -652,8 +896,6 @@ function nextStep(step) {
   }
 
 
-  // ПОЛ
-
   if (step === 3) {
 
     if (!profile.gender) {
@@ -667,9 +909,6 @@ function nextStep(step) {
 
     }
 
-
-    // Автоматически определяем,
-    // кого пользователь будет искать
 
     if (profile.gender === "Парень") {
 
@@ -816,34 +1055,111 @@ function showProfile() {
 }
 
 
-function createProfile() {
+/* ОТКРЫТЬ КОРОТКИЙ ЭКРАН ПРАВИЛ */
 
-  const status =
-    document
-      .getElementById("createStatus");
+function openRules() {
 
+  hideAll();
 
-  status.className =
-    "success";
-
-
-  status.innerText =
-    "Анкета создана!";
-
-
-  setTimeout(() => {
-
-    hideAll();
-
-    document
-      .getElementById("created")
-      .classList
-      .remove("hidden");
-
-  }, 700);
+  document
+    .getElementById("rulesScreen")
+    .classList
+    .remove("hidden");
 
 }
 
+
+/* ОТКРЫТЬ ПОЛНЫЕ ПРАВИЛА */
+
+function openFullRules() {
+
+  hideAll();
+
+  document
+    .getElementById("fullRules")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* ВЕРНУТЬСЯ К СОГЛАСИЮ */
+
+function closeFullRules() {
+
+  hideAll();
+
+  document
+    .getElementById("rulesScreen")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* АКТИВАЦИЯ КНОПКИ */
+
+function toggleCreateButton() {
+
+  const checkbox =
+    document.getElementById("agreeRules");
+
+  const button =
+    document.getElementById("createButton");
+
+
+  if (checkbox.checked) {
+
+    button.disabled = false;
+
+    button.classList
+      .remove("disabled");
+
+  } else {
+
+    button.disabled = true;
+
+    button.classList
+      .add("disabled");
+
+  }
+
+}
+
+
+/* СОЗДАНИЕ АНКЕТЫ */
+
+function confirmCreateProfile() {
+
+  const checkbox =
+    document.getElementById("agreeRules");
+
+  const error =
+    document.getElementById("rulesError");
+
+
+  if (!checkbox.checked) {
+
+    error.innerText =
+      "Необходимо подтвердить согласие с правилами.";
+
+    return;
+
+  }
+
+
+  hideAll();
+
+
+  document
+    .getElementById("created")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* ИЗМЕНИТЬ АНКЕТУ */
 
 function restart() {
 
@@ -856,6 +1172,8 @@ function restart() {
 
 }
 
+
+/* ПОКА ВРЕМЕННАЯ КНОПКА */
 
 function startDating() {
 
