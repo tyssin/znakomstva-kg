@@ -21,22 +21,32 @@
     }
 
     .app {
+      width: 100%;
       max-width: 430px;
       min-height: 100vh;
       margin: auto;
-      padding: 30px 20px;
-      text-align: center;
+      padding: 25px 20px 40px;
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .logo {
-      font-size: 60px;
-      margin-top: 70px;
-      margin-bottom: 20px;
+      font-size: 55px;
+      text-align: center;
+      margin: 35px 0 15px;
     }
 
     h1 {
+      text-align: center;
       font-size: 30px;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin: 10px 0 8px;
     }
 
     p {
@@ -44,13 +54,42 @@
       line-height: 1.5;
     }
 
+    .center {
+      text-align: center;
+    }
+
+    .step {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+      margin-bottom: 18px;
+      border: 1px solid #333;
+      border-radius: 14px;
+      background: #1d1d1d;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
     button {
       width: 100%;
-      padding: 17px;
-      margin-top: 20px;
+      padding: 16px;
+      margin-top: 10px;
       border: none;
       border-radius: 14px;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -65,22 +104,64 @@
       color: white;
     }
 
-    #status {
-      margin-top: 20px;
-      color: #aaa;
-      min-height: 25px;
+    .choice {
+      background: #1d1d1d;
+      color: white;
+      border: 1px solid #333;
+      margin-top: 10px;
     }
 
-    .hidden {
-      display: none;
-    }
-
-    .success {
-      color: #4ade80;
+    .choice.selected {
+      border: 2px solid white;
+      background: #333;
     }
 
     .error {
       color: #ff6b6b;
+      text-align: center;
+    }
+
+    .success {
+      color: #4ade80;
+      text-align: center;
+    }
+
+    .profile-card {
+      background: #1d1d1d;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .profile-name {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .profile-info {
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+
+    .profile-search {
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #aaa;
+      margin-top: 100px;
+    }
+
+    .gender-description {
+      background: #1d1d1d;
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 20px;
+      color: #aaa;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -89,25 +170,30 @@
 
 <div class="app">
 
-  <div class="logo">❤️</div>
+  <!-- ПРОВЕРКА ПОДПИСКИ -->
 
-  <h1>Знакомства КГ</h1>
+  <div id="loading" class="loading">
 
-  <p>
-    Знакомства для своих.<br>
-    Найди кого-нибудь из тусовки
-    Китай-города.
-  </p>
+    <div class="logo">❤️</div>
 
-  <div id="loading">
-    Проверяем доступ...
+    <h2>Проверяем доступ...</h2>
+
+    <p>Секунду</p>
+
   </div>
+
+
+  <!-- НЕТ ПОДПИСКИ -->
 
   <div id="subscribe" class="hidden">
 
-    <p class="error">
-      🔒 Доступ только для подписчиков
-      Подслушано Китай Город
+    <div class="logo">🔒</div>
+
+    <h1>Доступ закрыт</h1>
+
+    <p class="center">
+      Чтобы пользоваться знакомствами,
+      подпишись на Подслушано Китай Город.
     </p>
 
     <button class="primary" onclick="subscribe()">
@@ -118,23 +204,220 @@
       Я уже подписался
     </button>
 
+    <p id="subscribeStatus" class="error"></p>
+
   </div>
+
+
+  <!-- ГЛАВНЫЙ ЭКРАН -->
 
   <div id="welcome" class="hidden">
 
-    <p class="success">
-      ✅ Подписка подтверждена
+    <div class="logo">❤️</div>
+
+    <h1>Знакомства КГ</h1>
+
+    <p class="center">
+      Знакомства для своих.
+      Найди кого-нибудь из тусовки Китай-города.
     </p>
 
-    <button class="primary" onclick="startDating()">
-      ❤️ Начать знакомства
+    <button class="primary" onclick="startProfile()">
+      Создать анкету
     </button>
 
   </div>
 
-  <div id="status"></div>
+
+  <!-- ШАГ 1: ИМЯ -->
+
+  <div id="step1" class="hidden">
+
+    <div class="step">Шаг 1 из 4</div>
+
+    <h2>Как тебя зовут?</h2>
+
+    <p>
+      Напиши имя, которое увидят другие пользователи.
+    </p>
+
+    <input
+      id="name"
+      type="text"
+      placeholder="Например, Алина"
+      maxlength="30"
+    >
+
+    <button class="primary" onclick="nextStep(1)">
+      Продолжить
+    </button>
+
+    <p id="error1" class="error"></p>
+
+  </div>
+
+
+  <!-- ШАГ 2: ВОЗРАСТ -->
+
+  <div id="step2" class="hidden">
+
+    <div class="step">Шаг 2 из 4</div>
+
+    <h2>Сколько тебе лет?</h2>
+
+    <p>
+      В знакомствах могут участвовать только пользователи 18+.
+    </p>
+
+    <input
+      id="age"
+      type="number"
+      placeholder="18"
+      min="18"
+      max="99"
+    >
+
+    <button class="primary" onclick="nextStep(2)">
+      Продолжить
+    </button>
+
+    <p id="error2" class="error"></p>
+
+  </div>
+
+
+  <!-- ШАГ 3: ПОЛ -->
+
+  <div id="step3" class="hidden">
+
+    <div class="step">Шаг 3 из 4</div>
+
+    <h2>Кто ты?</h2>
+
+    <button
+      id="male"
+      class="choice"
+      onclick="selectGender('Парень')"
+    >
+      👨 Парень
+    </button>
+
+    <button
+      id="female"
+      class="choice"
+      onclick="selectGender('Девушка')"
+    >
+      👩 Девушка
+    </button>
+
+    <div id="searchInfo" class="gender-description hidden">
+      </div>
+
+    <button class="primary" onclick="nextStep(3)">
+      Продолжить
+    </button>
+
+    <p id="error3" class="error"></p>
+
+  </div>
+
+
+  <!-- ШАГ 4: О СЕБЕ -->
+
+  <div id="step4" class="hidden">
+
+    <div class="step">Шаг 4 из 4</div>
+
+    <h2>Расскажи о себе</h2>
+
+    <p>
+      Чем занимаешься? Что любишь?
+      Что стоит знать о тебе?
+    </p>
+
+    <textarea
+      id="about"
+      placeholder="Например: люблю музыку, тусовки и гулять по Москве..."
+      maxlength="300"
+    ></textarea>
+
+    <button class="primary" onclick="showProfile()">
+      Посмотреть анкету
+    </button>
+
+    <p id="error4" class="error"></p>
+
+  </div>
+
+
+  <!-- ПРЕДПРОСМОТР -->
+
+  <div id="preview" class="hidden">
+
+    <div class="step">Предпросмотр</div>
+
+    <h2>Твоя анкета</h2>
+
+    <div class="profile-card">
+
+      <div class="profile-name" id="profileName">
+        Алина
+      </div>
+
+      <div class="profile-info" id="profileInfo">
+        18 лет · Девушка
+      </div>
+
+      <div class="profile-search" id="profileSearch">
+        ❤️ Ищет парней
+      </div>
+
+      <div>
+        📍 Китай-город
+      </div>
+
+      <br>
+
+      <div id="profileAbout">
+        Люблю музыку и тусовки.
+      </div>
+
+    </div>
+
+    <button class="primary" onclick="createProfile()">
+      ❤️ Создать анкету
+    </button>
+
+    <button class="secondary" onclick="restart()">
+      Изменить
+    </button>
+
+    <p id="createStatus"></p>
+
+  </div>
+
+
+  <!-- АНКЕТА СОЗДАНА -->
+
+  <div id="created" class="hidden">
+
+    <div class="logo">🎉</div>
+
+    <h1>Анкета создана!</h1>
+
+    <p class="center">
+      Теперь можно смотреть анкеты других пользователей
+      и ставить лайки.
+    </p>
+
+    <button class="primary" onclick="startDating()">
+      ❤️ Смотреть анкеты
+    </button>
+
+  </div>
 
 </div>
+
 
 <script>
 
@@ -143,8 +426,49 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+
 const API_URL =
   "https://misty-meadow-8ef0kg-dating-api.ivonin-nik05.workers.dev/check";
+
+
+let profile = {
+
+  name: "",
+  age: "",
+  gender: "",
+  search: "",
+  about: ""
+
+};
+
+
+function hideAll() {
+
+  const screens = [
+
+    "loading",
+    "subscribe",
+    "welcome",
+    "step1",
+    "step2",
+    "step3",
+    "step4",
+    "preview",
+    "created"
+
+  ];
+
+  screens.forEach(id => {
+
+    document
+      .getElementById(id)
+      .classList
+      .add("hidden");
+
+  });
+
+}
+
 
 function subscribe() {
 
@@ -154,13 +478,19 @@ function subscribe() {
 
 }
 
+
 async function checkSubscription() {
 
-  const status = document.getElementById("status");
+  const status =
+    document.getElementById("subscribeStatus");
 
-  status.innerText = "Проверяем подписку...";
+  status.innerText =
+    "Проверяем...";
 
-  const user = tg.initDataUnsafe.user;
+
+  const user =
+    tg.initDataUnsafe.user;
+
 
   if (!user) {
 
@@ -171,77 +501,370 @@ async function checkSubscription() {
 
   }
 
+
   try {
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(
+      API_URL,
+      {
 
-      method: "POST",
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      body: JSON.stringify({
+        body: JSON.stringify({
 
-        user_id: user.id
+          user_id: user.id
 
-      })
+        })
 
-    });
+      }
+    );
 
-    const data = await response.json();
 
-    console.log(data);
+    const data =
+      await response.json();
+
 
     if (data.subscribed === true) {
 
-      document
-        .getElementById("subscribe")
-        .classList.add("hidden");
-
-      document
-        .getElementById("loading")
-        .classList.add("hidden");
+      hideAll();
 
       document
         .getElementById("welcome")
-        .classList.remove("hidden");
-
-      status.innerText = "";
+        .classList
+        .remove("hidden");
 
     } else {
 
-      document
-        .getElementById("loading")
-        .classList.add("hidden");
+      hideAll();
 
       document
         .getElementById("subscribe")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
       status.innerText =
-        "Подписка не найдена.";
+        "Подпишись на канал и нажми кнопку ещё раз.";
 
     }
+
 
   } catch (error) {
 
     console.error(error);
 
     status.innerText =
-      "Ошибка соединения с сервером.";
+      "Ошибка соединения.";
 
   }
 
 }
 
+
+function startProfile() {
+
+  hideAll();
+
+  document
+    .getElementById("step1")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function nextStep(step) {
+
+
+  // ИМЯ
+
+  if (step === 1) {
+
+    const name =
+      document
+        .getElementById("name")
+        .value
+        .trim();
+
+
+    if (!name) {
+
+      document
+        .getElementById("error1")
+        .innerText =
+        "Напиши своё имя.";
+
+      return;
+
+    }
+
+
+    profile.name = name;
+
+
+    hideAll();
+
+    document
+      .getElementById("step2")
+      .classList
+      .remove("hidden");
+
+  }
+
+
+  // ВОЗРАСТ
+
+  if (step === 2) {
+
+    const age =
+      Number(
+        document
+          .getElementById("age")
+          .value
+      );
+
+
+    if (age < 18 || age > 99) {
+
+      document
+        .getElementById("error2")
+        .innerText =
+        "Возраст должен быть от 18 до 99 лет.";
+
+      return;
+
+    }
+
+
+    profile.age = age;
+
+
+    hideAll();
+
+    document
+      .getElementById("step3")
+      .classList
+      .remove("hidden");
+
+  }
+
+
+  // ПОЛ
+
+  if (step === 3) {
+
+    if (!profile.gender) {
+
+      document
+        .getElementById("error3")
+        .innerText =
+        "Выбери свой пол.";
+
+      return;
+
+    }
+
+
+    // Автоматически определяем,
+    // кого пользователь будет искать
+
+    if (profile.gender === "Парень") {
+
+      profile.search = "Девушек";
+
+    } else {
+
+      profile.search = "Парней";
+
+    }
+
+
+    hideAll();
+
+    document
+      .getElementById("step4")
+      .classList
+      .remove("hidden");
+
+  }
+
+}
+
+
+function selectGender(gender) {
+
+  profile.gender = gender;
+
+
+  document
+    .getElementById("male")
+    .classList
+    .remove("selected");
+
+
+  document
+    .getElementById("female")
+    .classList
+    .remove("selected");
+
+
+  if (gender === "Парень") {
+
+    document
+      .getElementById("male")
+      .classList
+      .add("selected");
+
+
+    document
+      .getElementById("searchInfo")
+      .innerText =
+      "❤️ Тебе будут показываться анкеты девушек.";
+
+
+    document
+      .getElementById("searchInfo")
+      .classList
+      .remove("hidden");
+
+  }
+
+
+  if (gender === "Девушка") {
+
+    document
+      .getElementById("female")
+      .classList
+      .add("selected");
+
+
+    document
+      .getElementById("searchInfo")
+      .innerText =
+      "❤️ Тебе будут показываться анкеты парней.";
+
+
+    document
+      .getElementById("searchInfo")
+      .classList
+      .remove("hidden");
+
+  }
+
+}
+
+
+function showProfile() {
+
+  const about =
+    document
+      .getElementById("about")
+      .value
+      .trim();
+
+
+  if (!about) {
+
+    document
+      .getElementById("error4")
+      .innerText =
+      "Напиши немного о себе.";
+
+    return;
+
+  }
+
+
+  profile.about = about;
+
+
+  document
+    .getElementById("profileName")
+    .innerText =
+    profile.name;
+
+
+  document
+    .getElementById("profileInfo")
+    .innerText =
+    `${profile.age} лет · ${profile.gender}`;
+
+
+  document
+    .getElementById("profileSearch")
+    .innerText =
+    `❤️ Ищет ${profile.search.toLowerCase()}`;
+
+
+  document
+    .getElementById("profileAbout")
+    .innerText =
+    profile.about;
+
+
+  hideAll();
+
+
+  document
+    .getElementById("preview")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function createProfile() {
+
+  const status =
+    document
+      .getElementById("createStatus");
+
+
+  status.className =
+    "success";
+
+
+  status.innerText =
+    "Анкета создана!";
+
+
+  setTimeout(() => {
+
+    hideAll();
+
+    document
+      .getElementById("created")
+      .classList
+      .remove("hidden");
+
+  }, 700);
+
+}
+
+
+function restart() {
+
+  hideAll();
+
+  document
+    .getElementById("step1")
+    .classList
+    .remove("hidden");
+
+}
+
+
 function startDating() {
 
   alert(
-    "🔥 Отлично! Следующим шагом создадим твою анкету."
+    "🔥 Следующим шагом подключим настоящие анкеты."
   );
 
 }
+
 
 checkSubscription();
 
@@ -249,3 +872,4 @@ checkSubscription();
 
 </body>
 </html>
+    
