@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -126,11 +127,24 @@
       text-align: center;
     }
 
+    /* =========================
+       ПРОФИЛЬ
+    ========================= */
+
     .profile-card {
       background: #1d1d1d;
       border-radius: 20px;
       padding: 20px;
       margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .profile-photo {
+      width: calc(100% + 40px);
+      height: 360px;
+      object-fit: cover;
+      display: block;
+      margin: -20px -20px 20px;
     }
 
     .profile-name {
@@ -149,11 +163,43 @@
       margin-bottom: 15px;
     }
 
+    .profile-about {
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    .no-photo {
+      width: 100%;
+      height: 220px;
+      background: #292929;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: #777;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .no-photo-icon {
+      font-size: 45px;
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
     .loading {
       text-align: center;
       color: #aaa;
       margin-top: 100px;
     }
+
+    /* =========================
+       ОПИСАНИЕ ПОЛА
+    ========================= */
 
     .gender-description {
       background: #1d1d1d;
@@ -164,7 +210,78 @@
       line-height: 1.5;
     }
 
-    /* КОРОТКИЙ ЭКРАН ПРАВИЛ */
+    /* =========================
+       ФОТО
+    ========================= */
+
+    .photo-upload {
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .photo-label {
+      display: block;
+      width: 100%;
+      min-height: 220px;
+      border: 2px dashed #444;
+      border-radius: 18px;
+      background: #1d1d1d;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-placeholder {
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .photo-icon {
+      font-size: 45px;
+    }
+
+    .photo-hint {
+      font-size: 13px;
+      color: #777;
+    }
+
+    #photoPreview {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: none;
+    }
+
+    .photo-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .photo-actions button {
+      margin-top: 0;
+    }
+
+    .replace-photo {
+      background: #292929;
+      color: white;
+    }
+
+    .remove-photo {
+      background: #292929;
+      color: #ff6b6b;
+    }
+
+    /* =========================
+       ПРАВИЛА
+    ========================= */
 
     .rules-intro {
       background: #1a1a1a;
@@ -219,7 +336,9 @@
       cursor: not-allowed;
     }
 
-    /* ПОЛНЫЕ ПРАВИЛА */
+    /* =========================
+       ПОЛНЫЕ ПРАВИЛА
+    ========================= */
 
     .full-rules {
       background: #1a1a1a;
@@ -248,6 +367,7 @@
       color: white;
       margin-top: 20px;
     }
+
   </style>
 </head>
 
@@ -255,7 +375,9 @@
 
 <div class="app">
 
-  <!-- ПРОВЕРКА ПОДПИСКИ -->
+  <!-- =========================
+       ПРОВЕРКА ПОДПИСКИ
+  ========================= -->
 
   <div id="loading" class="loading">
 
@@ -268,7 +390,9 @@
   </div>
 
 
-  <!-- НЕТ ПОДПИСКИ -->
+  <!-- =========================
+       НЕТ ПОДПИСКИ
+  ========================= -->
 
   <div id="subscribe" class="hidden">
 
@@ -281,20 +405,31 @@
       подпишись на Подслушано Китай Город.
     </p>
 
-    <button class="primary" onclick="subscribe()">
+    <button
+      class="primary"
+      onclick="subscribe()"
+    >
       Подписаться на канал
     </button>
 
-    <button class="secondary" onclick="checkSubscription()">
+    <button
+      class="secondary"
+      onclick="checkSubscription()"
+    >
       Я уже подписался
     </button>
 
-    <p id="subscribeStatus" class="error"></p>
+    <p
+      id="subscribeStatus"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ГЛАВНЫЙ ЭКРАН -->
+  <!-- =========================
+       ГЛАВНЫЙ ЭКРАН
+  ========================= -->
 
   <div id="welcome" class="hidden">
 
@@ -307,14 +442,19 @@
       Найди кого-нибудь из тусовки Китай-города.
     </p>
 
-    <button class="primary" onclick="startProfile()">
+    <button
+      class="primary"
+      onclick="startProfile()"
+    >
       Создать анкету
     </button>
 
   </div>
 
 
-  <!-- ШАГ 1 -->
+  <!-- =========================
+       ШАГ 1
+  ========================= -->
 
   <div id="step1" class="hidden">
 
@@ -333,16 +473,24 @@
       maxlength="30"
     >
 
-    <button class="primary" onclick="nextStep(1)">
+    <button
+      class="primary"
+      onclick="nextStep(1)"
+    >
       Продолжить
     </button>
 
-    <p id="error1" class="error"></p>
+    <p
+      id="error1"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ШАГ 2 -->
+  <!-- =========================
+       ШАГ 2
+  ========================= -->
 
   <div id="step2" class="hidden">
 
@@ -362,16 +510,24 @@
       max="99"
     >
 
-    <button class="primary" onclick="nextStep(2)">
+    <button
+      class="primary"
+      onclick="nextStep(2)"
+    >
       Продолжить
     </button>
 
-    <p id="error2" class="error"></p>
+    <p
+      id="error2"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ШАГ 3 -->
+  <!-- =========================
+       ШАГ 3
+  ========================= -->
 
   <div id="step3" class="hidden">
 
@@ -395,25 +551,113 @@
       👩 Девушка
     </button>
 
-    <div id="searchInfo" class="gender-description hidden">
-    </div>
+    <div
+      id="searchInfo"
+      class="gender-description hidden"
+    ></div>
 
-    <button class="primary" onclick="nextStep(3)">
+    <button
+      class="primary"
+      onclick="nextStep(3)"
+    >
       Продолжить
     </button>
 
-    <p id="error3" class="error"></p>
+    <p
+      id="error3"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ШАГ 4 -->
+  <!-- =========================
+       ШАГ 4
+  ========================= -->
 
   <div id="step4" class="hidden">
 
     <div class="step">Шаг 4 из 4</div>
 
-    <h2>Расскажи о себе</h2>
+    <h2>Фото и немного о себе</h2>
+
+    <p>
+      Фото поможет другим пользователям узнать тебя,
+      но добавлять его необязательно.
+    </p>
+
+
+    <!-- ФОТО -->
+
+    <div class="photo-upload">
+
+      <label
+        for="photoInput"
+        class="photo-label"
+      >
+
+        <div
+          id="photoPlaceholder"
+          class="photo-placeholder"
+        >
+
+          <div class="photo-icon">
+            📸
+          </div>
+
+          <strong>
+            Добавить фотографию
+          </strong>
+
+          <div class="photo-hint">
+            Необязательно · JPG, PNG или WebP
+          </div>
+
+        </div>
+
+
+        <img
+          id="photoPreview"
+          alt="Предпросмотр фото"
+        >
+
+      </label>
+
+
+      <input
+        id="photoInput"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        hidden
+        onchange="handlePhoto(event)"
+      >
+
+
+      <div
+        id="photoActions"
+        class="photo-actions hidden"
+      >
+
+        <button
+          type="button"
+          class="replace-photo"
+          onclick="replacePhoto()"
+        >
+          🔄 Заменить
+        </button>
+
+        <button
+          type="button"
+          class="remove-photo"
+          onclick="removePhoto()"
+        >
+          ✕ Удалить
+        </button>
+
+      </div>
+
+    </div>
+
 
     <p>
       Чем занимаешься? Что любишь?
@@ -426,63 +670,135 @@
       maxlength="300"
     ></textarea>
 
-    <button class="primary" onclick="showProfile()">
+
+    <button
+      class="primary"
+      onclick="showProfile()"
+    >
       Посмотреть анкету
     </button>
 
-    <p id="error4" class="error"></p>
+    <p
+      id="error4"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ПРЕДПРОСМОТР -->
+  <!-- =========================
+       ПРЕДПРОСМОТР
+  ========================= -->
 
   <div id="preview" class="hidden">
 
-    <div class="step">Предпросмотр</div>
+    <div class="step">
+      Предпросмотр
+    </div>
 
-    <h2>Твоя анкета</h2>
+    <h2>
+      Твоя анкета
+    </h2>
+
 
     <div class="profile-card">
 
-      <div class="profile-name" id="profileName"></div>
 
-      <div class="profile-info" id="profileInfo"></div>
+      <!-- ФОТО -->
 
-      <div class="profile-search" id="profileSearch"></div>
+      <img
+        id="profilePhoto"
+        class="profile-photo"
+        alt="Фото анкеты"
+      >
+
+
+      <div
+        id="noPhoto"
+        class="no-photo"
+      >
+
+        <div class="no-photo-icon">
+          ❤️
+        </div>
+
+        <div>
+          Фото не добавлено
+        </div>
+
+      </div>
+
+
+      <div
+        class="profile-name"
+        id="profileName"
+      ></div>
+
+
+      <div
+        class="profile-info"
+        id="profileInfo"
+      ></div>
+
+
+      <div
+        class="profile-search"
+        id="profileSearch"
+      ></div>
+
 
       <div>
         📍 Китай-город
       </div>
 
-      <br>
 
-      <div id="profileAbout"></div>
+      <div
+        class="profile-about"
+        id="profileAbout"
+      ></div>
 
     </div>
 
-    <button class="primary" onclick="openRules()">
+
+    <button
+      class="primary"
+      onclick="openRules()"
+    >
       Всё верно
     </button>
 
-    <button class="secondary" onclick="restart()">
+
+    <button
+      class="secondary"
+      onclick="restart()"
+    >
       Изменить
     </button>
 
   </div>
 
 
-  <!-- КОРОТКИЙ ЭКРАН СОГЛАСИЯ -->
+  <!-- =========================
+       СОГЛАСИЕ С ПРАВИЛАМИ
+  ========================= -->
 
-  <div id="rulesScreen" class="hidden">
+  <div
+    id="rulesScreen"
+    class="hidden"
+  >
 
-    <div class="step">Последний шаг</div>
+    <div class="step">
+      Последний шаг
+    </div>
 
-    <h2>Перед созданием анкеты</h2>
+    <h2>
+      Перед созданием анкеты
+    </h2>
 
     <p>
       Пожалуйста, ознакомься с правилами сообщества.
     </p>
+
 
     <div
       class="rules-link"
@@ -525,22 +841,39 @@
       ❤️ Создать анкету
     </button>
 
-    <p id="rulesError" class="error"></p>
+
+    <p
+      id="rulesError"
+      class="error"
+    ></p>
 
   </div>
 
 
-  <!-- ПОЛНЫЕ ПРАВИЛА -->
+  <!-- =========================
+       ПОЛНЫЕ ПРАВИЛА
+  ========================= -->
 
-  <div id="fullRules" class="hidden">
+  <div
+    id="fullRules"
+    class="hidden"
+  >
 
-    <div class="step">Правила сообщества</div>
+    <div class="step">
+      Правила сообщества
+    </div>
 
-    <h2>📜 Правила «Знакомств КГ»</h2>
+    <h2>
+      📜 Правила «Знакомств КГ»
+    </h2>
+
 
     <div class="full-rules">
 
-      <h3>1. 🔞 18+</h3>
+
+      <h3>
+        1. 🔞 18+
+      </h3>
 
       <p>
         Сервис предназначен только для совершеннолетних
@@ -549,7 +882,9 @@
       </p>
 
 
-      <h3>2. 🤝 Уважение</h3>
+      <h3>
+        2. 🤝 Уважение
+      </h3>
 
       <p>
         Запрещены оскорбления, травля, угрозы, шантаж,
@@ -558,7 +893,9 @@
       </p>
 
 
-      <h3>3. 📸 Фейковые анкеты</h3>
+      <h3>
+        3. 📸 Фейковые анкеты
+      </h3>
 
       <p>
         Запрещено использовать чужие фотографии,
@@ -567,7 +904,9 @@
       </p>
 
 
-      <h3>4. 🚫 Наркотики и психоактивные вещества</h3>
+      <h3>
+        4. 🚫 Наркотики и психоактивные вещества
+      </h3>
 
       <p>
         Запрещены поиск, продажа, покупка, передача,
@@ -577,7 +916,9 @@
       </p>
 
 
-      <h3>5. 🚫 Политика</h3>
+      <h3>
+        5. 🚫 Политика
+      </h3>
 
       <p>
         Запрещены политическая агитация, пропаганда,
@@ -586,7 +927,9 @@
       </p>
 
 
-      <h3>6. 💰 Мошенничество</h3>
+      <h3>
+        6. 💰 Мошенничество
+      </h3>
 
       <p>
         Запрещены обман, вымогательство, финансовые схемы
@@ -595,7 +938,9 @@
       </p>
 
 
-      <h3>7. 📢 Реклама и спам</h3>
+      <h3>
+        7. 📢 Реклама и спам
+      </h3>
 
       <p>
         Запрещены массовые рассылки, навязчивая реклама,
@@ -604,7 +949,9 @@
       </p>
 
 
-      <h3>8. 🔐 Персональные данные</h3>
+      <h3>
+        8. 🔐 Персональные данные
+      </h3>
 
       <p>
         Запрещено публиковать или распространять чужие
@@ -613,7 +960,9 @@
       </p>
 
 
-      <h3>9. ⚠️ Жалобы</h3>
+      <h3>
+        9. ⚠️ Жалобы
+      </h3>
 
       <p>
         Если пользователь нарушает правила, на него можно
@@ -622,7 +971,9 @@
       </p>
 
 
-      <h3>10. 🛡 Модерация</h3>
+      <h3>
+        10. 🛡 Модерация
+      </h3>
 
       <p>
         Администрация имеет право отклонить, скрыть или
@@ -643,20 +994,32 @@
   </div>
 
 
-  <!-- АНКЕТА СОЗДАНА -->
+  <!-- =========================
+       АНКЕТА СОЗДАНА
+  ========================= -->
 
-  <div id="created" class="hidden">
+  <div
+    id="created"
+    class="hidden"
+  >
 
-    <div class="logo">🎉</div>
+    <div class="logo">
+      🎉
+    </div>
 
-    <h1>Анкета отправлена!</h1>
+    <h1>
+      Анкета отправлена!
+    </h1>
 
     <p class="center">
       Твоя анкета отправлена на модерацию.
       После одобрения она появится у других пользователей.
     </p>
 
-    <button class="primary" onclick="startDating()">
+    <button
+      class="primary"
+      onclick="startDating()"
+    >
       ❤️ Смотреть анкеты
     </button>
 
@@ -667,44 +1030,80 @@
 
 <script>
 
-const tg = window.Telegram.WebApp;
+/* =========================
+   TELEGRAM
+========================= */
+
+const tg =
+  window.Telegram.WebApp;
 
 tg.ready();
 tg.expand();
 
 
+/* =========================
+   API
+========================= */
+
 const API_URL =
   "https://misty-meadow-8ef0kg-dating-api.ivonin-nik05.workers.dev/check";
 
 
+/* =========================
+   ПРОФИЛЬ
+========================= */
+
 let profile = {
 
   name: "",
+
   age: "",
+
   gender: "",
+
   search: "",
-  about: ""
+
+  about: "",
+
+  photo: null,
+
+  photoData: ""
 
 };
 
+
+/* =========================
+   СКРЫТЬ ВСЕ ЭКРАНЫ
+========================= */
 
 function hideAll() {
 
   const screens = [
 
     "loading",
+
     "subscribe",
+
     "welcome",
+
     "step1",
+
     "step2",
+
     "step3",
+
     "step4",
+
     "preview",
+
     "rulesScreen",
+
     "fullRules",
+
     "created"
 
   ];
+
 
   screens.forEach(id => {
 
@@ -718,6 +1117,10 @@ function hideAll() {
 }
 
 
+/* =========================
+   ПОДПИСКА
+========================= */
+
 function subscribe() {
 
   tg.openTelegramLink(
@@ -730,7 +1133,10 @@ function subscribe() {
 async function checkSubscription() {
 
   const status =
-    document.getElementById("subscribeStatus");
+    document.getElementById(
+      "subscribeStatus"
+    );
+
 
   status.innerText =
     "Проверяем...";
@@ -752,47 +1158,60 @@ async function checkSubscription() {
 
   try {
 
-    const response = await fetch(
-      API_URL,
-      {
+    const response =
+      await fetch(
+        API_URL,
+        {
 
-        method: "POST",
+          method: "POST",
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+          headers: {
 
-        body: JSON.stringify({
+            "Content-Type":
+              "application/json"
 
-          user_id: user.id
+          },
 
-        })
+          body:
+            JSON.stringify({
 
-      }
-    );
+              user_id:
+                user.id
+
+            })
+
+        }
+      );
 
 
     const data =
       await response.json();
 
 
-    if (data.subscribed === true) {
+    if (
+      data.subscribed === true
+    ) {
 
       hideAll();
+
 
       document
         .getElementById("welcome")
         .classList
         .remove("hidden");
 
-    } else {
+    }
+
+    else {
 
       hideAll();
+
 
       document
         .getElementById("subscribe")
         .classList
         .remove("hidden");
+
 
       status.innerText =
         "Подпишись на канал и нажми кнопку ещё раз.";
@@ -800,9 +1219,12 @@ async function checkSubscription() {
     }
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(error);
+
 
     status.innerText =
       "Ошибка соединения.";
@@ -812,9 +1234,14 @@ async function checkSubscription() {
 }
 
 
+/* =========================
+   НАЧАТЬ СОЗДАНИЕ
+========================= */
+
 function startProfile() {
 
   hideAll();
+
 
   document
     .getElementById("step1")
@@ -824,8 +1251,14 @@ function startProfile() {
 }
 
 
+/* =========================
+   ШАГИ
+========================= */
+
 function nextStep(step) {
 
+
+  /* ШАГ 1 */
 
   if (step === 1) {
 
@@ -848,10 +1281,12 @@ function nextStep(step) {
     }
 
 
-    profile.name = name;
+    profile.name =
+      name;
 
 
     hideAll();
+
 
     document
       .getElementById("step2")
@@ -860,6 +1295,8 @@ function nextStep(step) {
 
   }
 
+
+  /* ШАГ 2 */
 
   if (step === 2) {
 
@@ -871,7 +1308,10 @@ function nextStep(step) {
       );
 
 
-    if (age < 18 || age > 99) {
+    if (
+      age < 18 ||
+      age > 99
+    ) {
 
       document
         .getElementById("error2")
@@ -883,10 +1323,12 @@ function nextStep(step) {
     }
 
 
-    profile.age = age;
+    profile.age =
+      age;
 
 
     hideAll();
+
 
     document
       .getElementById("step3")
@@ -895,6 +1337,8 @@ function nextStep(step) {
 
   }
 
+
+  /* ШАГ 3 */
 
   if (step === 3) {
 
@@ -910,18 +1354,25 @@ function nextStep(step) {
     }
 
 
-    if (profile.gender === "Парень") {
+    if (
+      profile.gender === "Парень"
+    ) {
 
-      profile.search = "Девушек";
+      profile.search =
+        "Девушек";
 
-    } else {
+    }
 
-      profile.search = "Парней";
+    else {
+
+      profile.search =
+        "Парней";
 
     }
 
 
     hideAll();
+
 
     document
       .getElementById("step4")
@@ -933,9 +1384,14 @@ function nextStep(step) {
 }
 
 
+/* =========================
+   ВЫБОР ПОЛА
+========================= */
+
 function selectGender(gender) {
 
-  profile.gender = gender;
+  profile.gender =
+    gender;
 
 
   document
@@ -950,7 +1406,9 @@ function selectGender(gender) {
     .remove("selected");
 
 
-  if (gender === "Парень") {
+  if (
+    gender === "Парень"
+  ) {
 
     document
       .getElementById("male")
@@ -972,7 +1430,9 @@ function selectGender(gender) {
   }
 
 
-  if (gender === "Девушка") {
+  if (
+    gender === "Девушка"
+  ) {
 
     document
       .getElementById("female")
@@ -996,6 +1456,210 @@ function selectGender(gender) {
 }
 
 
+/* =========================
+   ЗАГРУЗКА ФОТО
+========================= */
+
+function handlePhoto(event) {
+
+  const file =
+    event.target.files[0];
+
+
+  if (!file) {
+
+    return;
+
+  }
+
+
+  const allowedTypes = [
+
+    "image/jpeg",
+
+    "image/png",
+
+    "image/webp"
+
+  ];
+
+
+  if (
+    !allowedTypes.includes(
+      file.type
+    )
+  ) {
+
+    document
+      .getElementById("error4")
+      .innerText =
+      "Можно загрузить только JPG, PNG или WebP.";
+
+
+    event.target.value =
+      "";
+
+
+    return;
+
+  }
+
+
+  if (
+    file.size >
+    8 * 1024 * 1024
+  ) {
+
+    document
+      .getElementById("error4")
+      .innerText =
+      "Фото должно весить не больше 8 МБ.";
+
+
+    event.target.value =
+      "";
+
+
+    return;
+
+  }
+
+
+  profile.photo =
+    file;
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(e) {
+
+      profile.photoData =
+        e.target.result;
+
+
+      const preview =
+        document.getElementById(
+          "photoPreview"
+        );
+
+
+      preview.src =
+        profile.photoData;
+
+
+      preview.style.display =
+        "block";
+
+
+      document
+        .getElementById(
+          "photoPlaceholder"
+        )
+        .style.display =
+        "none";
+
+
+      document
+        .getElementById(
+          "photoActions"
+        )
+        .classList
+        .remove("hidden");
+
+
+      document
+        .getElementById(
+          "error4"
+        )
+        .innerText =
+        "";
+
+    };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+/* =========================
+   ЗАМЕНИТЬ ФОТО
+========================= */
+
+function replacePhoto() {
+
+  document
+    .getElementById(
+      "photoInput"
+    )
+    .click();
+
+}
+
+
+/* =========================
+   УДАЛИТЬ ФОТО
+========================= */
+
+function removePhoto() {
+
+  profile.photo =
+    null;
+
+
+  profile.photoData =
+    "";
+
+
+  const input =
+    document.getElementById(
+      "photoInput"
+    );
+
+
+  input.value =
+    "";
+
+
+  const preview =
+    document.getElementById(
+      "photoPreview"
+    );
+
+
+  preview.src =
+    "";
+
+
+  preview.style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "photoPlaceholder"
+    )
+    .style.display =
+    "flex";
+
+
+  document
+    .getElementById(
+      "photoActions"
+    )
+    .classList
+    .add("hidden");
+
+}
+
+
+/* =========================
+   ПРЕДПРОСМОТР
+========================= */
+
 function showProfile() {
 
   const about =
@@ -1017,29 +1681,88 @@ function showProfile() {
   }
 
 
-  profile.about = about;
+  profile.about =
+    about;
+
+
+  const profilePhoto =
+    document.getElementById(
+      "profilePhoto"
+    );
+
+
+  const noPhoto =
+    document.getElementById(
+      "noPhoto"
+    );
+
+
+  /* ЕСЛИ ЕСТЬ ФОТО */
+
+  if (
+    profile.photoData
+  ) {
+
+    profilePhoto.src =
+      profile.photoData;
+
+
+    profilePhoto.style.display =
+      "block";
+
+
+    noPhoto.style.display =
+      "none";
+
+  }
+
+
+  /* ЕСЛИ ФОТО НЕТ */
+
+  else {
+
+    profilePhoto.src =
+      "";
+
+
+    profilePhoto.style.display =
+      "none";
+
+
+    noPhoto.style.display =
+      "flex";
+
+  }
 
 
   document
-    .getElementById("profileName")
+    .getElementById(
+      "profileName"
+    )
     .innerText =
     profile.name;
 
 
   document
-    .getElementById("profileInfo")
+    .getElementById(
+      "profileInfo"
+    )
     .innerText =
     `${profile.age} лет · ${profile.gender}`;
 
 
   document
-    .getElementById("profileSearch")
+    .getElementById(
+      "profileSearch"
+    )
     .innerText =
     `❤️ Ищет ${profile.search.toLowerCase()}`;
 
 
   document
-    .getElementById("profileAbout")
+    .getElementById(
+      "profileAbout"
+    )
     .innerText =
     profile.about;
 
@@ -1048,76 +1771,100 @@ function showProfile() {
 
 
   document
-    .getElementById("preview")
+    .getElementById(
+      "preview"
+    )
     .classList
     .remove("hidden");
 
 }
 
 
-/* ОТКРЫТЬ КОРОТКИЙ ЭКРАН ПРАВИЛ */
+/* =========================
+   ПРАВИЛА
+========================= */
 
 function openRules() {
 
   hideAll();
 
+
   document
-    .getElementById("rulesScreen")
+    .getElementById(
+      "rulesScreen"
+    )
     .classList
     .remove("hidden");
 
 }
 
-
-/* ОТКРЫТЬ ПОЛНЫЕ ПРАВИЛА */
 
 function openFullRules() {
 
   hideAll();
 
+
   document
-    .getElementById("fullRules")
+    .getElementById(
+      "fullRules"
+    )
     .classList
     .remove("hidden");
 
 }
 
-
-/* ВЕРНУТЬСЯ К СОГЛАСИЮ */
 
 function closeFullRules() {
 
   hideAll();
 
+
   document
-    .getElementById("rulesScreen")
+    .getElementById(
+      "rulesScreen"
+    )
     .classList
     .remove("hidden");
 
 }
 
 
-/* АКТИВАЦИЯ КНОПКИ */
+/* =========================
+   ГАЛОЧКА
+========================= */
 
 function toggleCreateButton() {
 
   const checkbox =
-    document.getElementById("agreeRules");
+    document.getElementById(
+      "agreeRules"
+    );
+
 
   const button =
-    document.getElementById("createButton");
+    document.getElementById(
+      "createButton"
+    );
 
 
-  if (checkbox.checked) {
+  if (
+    checkbox.checked
+  ) {
 
-    button.disabled = false;
+    button.disabled =
+      false;
+
 
     button.classList
       .remove("disabled");
 
-  } else {
+  }
 
-    button.disabled = true;
+  else {
+
+    button.disabled =
+      true;
+
 
     button.classList
       .add("disabled");
@@ -1127,18 +1874,27 @@ function toggleCreateButton() {
 }
 
 
-/* СОЗДАНИЕ АНКЕТЫ */
+/* =========================
+   СОЗДАНИЕ АНКЕТЫ
+========================= */
 
 function confirmCreateProfile() {
 
   const checkbox =
-    document.getElementById("agreeRules");
+    document.getElementById(
+      "agreeRules"
+    );
+
 
   const error =
-    document.getElementById("rulesError");
+    document.getElementById(
+      "rulesError"
+    );
 
 
-  if (!checkbox.checked) {
+  if (
+    !checkbox.checked
+  ) {
 
     error.innerText =
       "Необходимо подтвердить согласие с правилами.";
@@ -1148,32 +1904,51 @@ function confirmCreateProfile() {
   }
 
 
+  /*
+    ПОКА ТОЛЬКО ПОКАЗЫВАЕМ
+    ЧТО АНКЕТА ОТПРАВЛЕНА.
+
+    Следующим этапом подключим
+    отправку profile + photo
+    на сервер.
+  */
+
+
   hideAll();
 
 
   document
-    .getElementById("created")
+    .getElementById(
+      "created"
+    )
     .classList
     .remove("hidden");
 
 }
 
 
-/* ИЗМЕНИТЬ АНКЕТУ */
+/* =========================
+   ИЗМЕНИТЬ АНКЕТУ
+========================= */
 
 function restart() {
 
   hideAll();
 
+
   document
-    .getElementById("step1")
+    .getElementById(
+      "step1"
+    )
     .classList
     .remove("hidden");
 
 }
 
 
-/* ПОКА ВРЕМЕННАЯ КНОПКА */
+/* =========================
+   ПОКА ВРЕМЕННАЯ КНОПКА
+========================= */
 
 function startDating() {
 
@@ -1184,10 +1959,16 @@ function startDating() {
 }
 
 
+/* =========================
+   ЗАПУСК
+========================= */
+
 checkSubscription();
 
 </script>
 
 </body>
 </html>
+```
+
     
