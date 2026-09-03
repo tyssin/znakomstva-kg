@@ -518,7 +518,57 @@
 
   <div id="step3" class="hidden">
 
-    <div class="step">Шаг 3 из 4</div>
+    <div class="step">Шаг 3 из 5</div>
+
+    <h2>Что ты ищешь?</h2>
+
+    <p>
+      Выбери, с какой целью ты хочешь знакомиться.
+    </p>
+
+    <button
+      id="friendship"
+      class="choice"
+      onclick="selectSearchType('Дружба')"
+    >
+      🤝 Дружбу
+    </button>
+
+    <button
+      id="relationship"
+      class="choice"
+      onclick="selectSearchType('Вторая половинка')"
+    >
+      ❤️ Вторую половинку
+    </button>
+
+    <div
+      id="searchTypeInfo"
+      class="gender-description hidden"
+    ></div>
+
+    <button
+      class="primary"
+      onclick="nextStep(3)"
+    >
+      Продолжить
+    </button>
+
+    <p
+      id="error3"
+      class="error"
+    ></p>
+
+  </div>
+
+
+  <!-- =========================
+       STEP 4
+  ========================= -->
+
+  <div id="step4" class="hidden">
+
+    <div class="step">Шаг 4 из 5</div>
 
     <h2>Кто ты?</h2>
 
@@ -545,13 +595,13 @@
 
     <button
       class="primary"
-      onclick="nextStep(3)"
+      onclick="nextStep(4)"
     >
       Продолжить
     </button>
 
     <p
-      id="error3"
+      id="error4"
       class="error"
     ></p>
 
@@ -559,12 +609,12 @@
 
 
   <!-- =========================
-       STEP 4
+       STEP 5
   ========================= -->
 
-  <div id="step4" class="hidden">
+  <div id="step5" class="hidden">
 
-    <div class="step">Шаг 4 из 4</div>
+    <div class="step">Шаг 5 из 5</div>
 
     <h2>Фото и немного о себе</h2>
 
@@ -665,7 +715,7 @@
     </button>
 
     <p
-      id="error4"
+      id="error5"
       class="error"
     ></p>
 
@@ -1014,6 +1064,7 @@ let profile = {
   age: "",
   gender: "",
   search: "",
+  searchType: "",
   about: "",
   photo: null
 
@@ -1035,6 +1086,7 @@ function hideAll() {
     "step2",
     "step3",
     "step4",
+    "step5",
     "preview",
     "rulesScreen",
     "fullRules",
@@ -1189,7 +1241,6 @@ function startProfile() {
 
 function nextStep(step) {
 
-
   if (step === 1) {
 
     const name =
@@ -1198,22 +1249,15 @@ function nextStep(step) {
         .value
         .trim();
 
-
     if (!name) {
-
       document
         .getElementById("error1")
         .innerText =
         "Напиши своё имя.";
-
       return;
-
     }
 
-
-    profile.name =
-      name;
-
+    profile.name = name;
 
     hideAll();
 
@@ -1221,7 +1265,6 @@ function nextStep(step) {
       .getElementById("step2")
       .classList
       .remove("hidden");
-
   }
 
 
@@ -1234,25 +1277,15 @@ function nextStep(step) {
           .value
       );
 
-
-    if (
-      age < 18 ||
-      age > 99
-    ) {
-
+    if (age < 18 || age > 99) {
       document
         .getElementById("error2")
         .innerText =
         "Возраст должен быть от 18 до 99 лет.";
-
       return;
-
     }
 
-
-    profile.age =
-      age;
-
+    profile.age = age;
 
     hideAll();
 
@@ -1260,40 +1293,18 @@ function nextStep(step) {
       .getElementById("step3")
       .classList
       .remove("hidden");
-
   }
 
 
   if (step === 3) {
 
-    if (!profile.gender) {
-
+    if (!profile.searchType) {
       document
         .getElementById("error3")
         .innerText =
-        "Выбери свой пол.";
-
+        "Выбери, что ты ищешь.";
       return;
-
     }
-
-
-    if (
-      profile.gender === "Парень"
-    ) {
-
-      profile.search =
-        "Девушек";
-
-    }
-
-    else {
-
-      profile.search =
-        "Парней";
-
-    }
-
 
     hideAll();
 
@@ -1301,8 +1312,86 @@ function nextStep(step) {
       .getElementById("step4")
       .classList
       .remove("hidden");
+  }
+
+
+  if (step === 4) {
+
+    if (!profile.gender) {
+      document
+        .getElementById("error4")
+        .innerText =
+        "Выбери свой пол.";
+      return;
+    }
+
+    if (profile.searchType === "Дружба") {
+      profile.search = "Парней и девушек";
+    } else if (profile.gender === "Парень") {
+      profile.search = "Девушек";
+    } else {
+      profile.search = "Парней";
+    }
+
+    hideAll();
+
+    document
+      .getElementById("step5")
+      .classList
+      .remove("hidden");
+  }
+
+}
+
+
+/* =========================
+   SEARCH TYPE
+========================= */
+
+function selectSearchType(type) {
+
+  profile.searchType = type;
+
+  document
+    .getElementById("friendship")
+    .classList
+    .remove("selected");
+
+  document
+    .getElementById("relationship")
+    .classList
+    .remove("selected");
+
+  if (type === "Дружба") {
+
+    document
+      .getElementById("friendship")
+      .classList
+      .add("selected");
+
+    document
+      .getElementById("searchTypeInfo")
+      .innerText =
+      "🤝 Тебе будут показываться анкеты и парней, и девушек.";
+
+  } else {
+
+    document
+      .getElementById("relationship")
+      .classList
+      .add("selected");
+
+    document
+      .getElementById("searchTypeInfo")
+      .innerText =
+      "❤️ После выбора пола тебе будут показываться анкеты подходящего пола.";
 
   }
+
+  document
+    .getElementById("searchTypeInfo")
+    .classList
+    .remove("hidden");
 
 }
 
@@ -1342,7 +1431,9 @@ function selectGender(gender) {
     document
       .getElementById("searchInfo")
       .innerText =
-      "❤️ Тебе будут показываться анкеты девушек.";
+      profile.searchType === "Дружба"
+        ? "🤝 Тебе будут показываться анкеты и парней, и девушек."
+        : "❤️ Тебе будут показываться анкеты девушек.";
 
 
     document
@@ -1366,7 +1457,9 @@ function selectGender(gender) {
     document
       .getElementById("searchInfo")
       .innerText =
-      "❤️ Тебе будут показываться анкеты парней.";
+      profile.searchType === "Дружба"
+        ? "🤝 Тебе будут показываться анкеты и парней, и девушек."
+        : "❤️ Тебе будут показываться анкеты парней.";
 
 
     document
@@ -1410,7 +1503,7 @@ function handlePhoto(event) {
   ) {
 
     document
-      .getElementById("error4")
+      .getElementById("error5")
       .innerText =
       "Можно загрузить только JPG, PNG или WebP.";
 
@@ -1427,7 +1520,7 @@ function handlePhoto(event) {
   ) {
 
     document
-      .getElementById("error4")
+      .getElementById("error5")
       .innerText =
       "Фото должно весить не больше 8 МБ.";
 
@@ -1577,7 +1670,7 @@ function showProfile() {
   if (!about) {
 
     document
-      .getElementById("error4")
+      .getElementById("error5")
       .innerText =
       "Напиши немного о себе.";
 
@@ -1850,6 +1943,12 @@ async function confirmCreateProfile() {
 
 
     formData.append(
+      "search_type",
+      profile.searchType
+    );
+
+
+    formData.append(
       "about",
       profile.about
     );
@@ -1957,6 +2056,28 @@ async function confirmCreateProfile() {
 ========================= */
 
 function restart() {
+
+  profile.name = "";
+  profile.age = "";
+  profile.gender = "";
+  profile.search = "";
+  profile.searchType = "";
+  profile.about = "";
+  profile.photo = null;
+
+  document.getElementById("name").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("about").value = "";
+
+  document.getElementById("friendship").classList.remove("selected");
+  document.getElementById("relationship").classList.remove("selected");
+  document.getElementById("male").classList.remove("selected");
+  document.getElementById("female").classList.remove("selected");
+
+  document.getElementById("searchTypeInfo").classList.add("hidden");
+  document.getElementById("searchInfo").classList.add("hidden");
+
+  removePhoto();
 
   hideAll();
 
