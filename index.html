@@ -751,7 +751,7 @@
         class="no-photo"
       >
 
-        <div class="no-photo-icon">
+        <div class="no-photo-icon" id="noPhotoIcon">
           ❤️
         </div>
 
@@ -860,6 +860,22 @@
       <span>
         Я ознакомился(ась) с правилами
         и согласен(на) их соблюдать.
+      </span>
+
+    </label>
+
+    <label class="agreement">
+
+      <input
+        id="agreePersonalData"
+        type="checkbox"
+        onchange="toggleCreateButton()"
+      >
+
+      <span>
+        Я даю согласие на обработку моих персональных данных
+        для создания и размещения анкеты в сервисе
+        «Знакомства КГ».
       </span>
 
     </label>
@@ -1739,7 +1755,16 @@ function showProfile() {
   document
     .getElementById("profileSearch")
     .innerText =
-    `❤️ Ищет ${profile.search.toLowerCase()}`;
+    profile.searchType === "Дружба"
+      ? "🤝 Ищет дружбу"
+      : `❤️ Ищет ${profile.search.toLowerCase()}`;
+
+  document
+    .getElementById("noPhotoIcon")
+    .innerText =
+    profile.searchType === "Дружба"
+      ? "🤝"
+      : "❤️";
 
 
   document
@@ -1805,9 +1830,14 @@ function closeFullRules() {
 
 function toggleCreateButton() {
 
-  const checkbox =
+  const rulesCheckbox =
     document.getElementById(
       "agreeRules"
+    );
+
+  const personalDataCheckbox =
+    document.getElementById(
+      "agreePersonalData"
     );
 
 
@@ -1818,7 +1848,8 @@ function toggleCreateButton() {
 
 
   if (
-    checkbox.checked
+    rulesCheckbox.checked &&
+    personalDataCheckbox.checked
   ) {
 
     button.disabled =
@@ -1848,9 +1879,14 @@ function toggleCreateButton() {
 
 async function confirmCreateProfile() {
 
-  const checkbox =
+  const rulesCheckbox =
     document.getElementById(
       "agreeRules"
+    );
+
+  const personalDataCheckbox =
+    document.getElementById(
+      "agreePersonalData"
     );
 
 
@@ -1860,10 +1896,19 @@ async function confirmCreateProfile() {
     );
 
 
-  if (!checkbox.checked) {
+  if (!rulesCheckbox.checked) {
 
     error.innerText =
       "Необходимо подтвердить согласие с правилами.";
+
+    return;
+
+  }
+
+  if (!personalDataCheckbox.checked) {
+
+    error.innerText =
+      "Необходимо дать согласие на обработку персональных данных.";
 
     return;
 
@@ -2076,6 +2121,10 @@ function restart() {
 
   document.getElementById("searchTypeInfo").classList.add("hidden");
   document.getElementById("searchInfo").classList.add("hidden");
+
+  document.getElementById("agreeRules").checked = false;
+  document.getElementById("agreePersonalData").checked = false;
+  toggleCreateButton();
 
   removePhoto();
 
